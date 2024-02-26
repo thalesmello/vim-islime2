@@ -1,17 +1,21 @@
 on runInNextSession(theCommand)
   tell application "iTerm"
-    tell current tab of current window
-      set currentSessionId to the id of current session
-      repeat with i from 1 to count sessions
-        set theId to the id of session i
-        if theId = currentSessionId then exit repeat
-      end repeat
+    set session_count to count sessions of current tab of current window
 
-      set i to i + 1
-      if i is greater than (count sessions) then set i to 1
+    if session_count > 1 then
+      tell current tab of current window
+        set currentSessionId to the id of current session
+        repeat with i from 1 to count sessions
+          set theId to the id of session i
+          if theId = currentSessionId then exit repeat
+        end repeat
 
-      tell session i to write text theCommand
-    end tell
+        set i to i + 1
+        if i is greater than (count sessions) then set i to 1
+
+        tell session i to write text theCommand
+      end tell
+    end if
   end tell
 end runInNextSession
 
